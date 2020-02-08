@@ -13,9 +13,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
+    private SpawnManager _spawnManager;
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        if(_spawnManager == null)
+        {
+            Debug.Log("Null Spawn Manager");
+        }
     }
 
     void Update()
@@ -57,6 +63,7 @@ public class Player : MonoBehaviour
         _lives--;
         if (_lives <= 0)
         {
+            _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
     }

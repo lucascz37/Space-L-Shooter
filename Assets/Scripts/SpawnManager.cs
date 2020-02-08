@@ -5,10 +5,13 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _enemy;
+    private GameObject _enemyPrefab;
+    [SerializeField]
+    private GameObject _enemyContainer;
+    private bool _stopSpawning = false;
     void Start()
     {
-        StartCoroutine("SpawnRoutine");
+        StartCoroutine(SpawnRoutine());
     }
 
     // Update is called once per frame
@@ -19,10 +22,16 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnRoutine()
     {
-        while (true)
-        {
-            Instantiate(_enemy, new Vector3(Random.Range(-8f, 8f), 7, 0), Quaternion.identity);
+        while (_stopSpawning == false)
+        {   
+            GameObject newEnemy = Instantiate(_enemyPrefab, new Vector3(Random.Range(-8f, 8f), 7, 0), Quaternion.identity);
+            newEnemy.transform.parent =_enemyContainer.transform;
             yield return new WaitForSeconds(5);
         }
+    }
+
+    public void OnPlayerDeath()
+    {
+        _stopSpawning = true;
     }
 }
