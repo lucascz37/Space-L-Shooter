@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{  
+{
+    [SerializeField]
+    private int _lives = 5;
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
@@ -48,5 +50,14 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
         Vector3 laserOffset = new Vector3(transform.position.x, transform.position.y + 0.8f, 0);
         Instantiate(_laserPrefab, laserOffset, Quaternion.identity);
+    }
+
+    public void Damage()
+    {
+        _lives--;
+        if (_lives <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
